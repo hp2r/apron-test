@@ -1,0 +1,26 @@
+[
+  {
+    "gender": "Male",
+    "firstname": "Johns",
+    "lastname": "Doesss",
+    "age": "111"
+  },
+  {
+    "gender": "Female",
+    "firstname": "Jane",
+    "lastname": "Doe",
+    "age": "23"
+  },
+  {
+    "gender": "Male",
+    "firstname": "Hiren",
+    "lastname": "Patel",
+    "age": "40"
+  },
+  {
+    "gender": "Male",
+    "firstname": "asjdn",
+    "lastname": "Does",
+    "age": "18"
+  }
+]
