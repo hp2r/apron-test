@@ -9,6 +9,6 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["@testing-library/jest-dom"],
-    exclude: ["./node_modules/","./tests/", "./tests-examples/"],
+    exclude: ["./node_modules/","./tests/"],
   },
 })
