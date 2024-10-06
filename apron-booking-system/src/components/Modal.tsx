@@ -16,14 +16,6 @@ const ModalBackground = styled('div', {
 });
 
 const ModalContent = styled('div', {
-  /*backgroundColor: '#fff',
-  padding: '2rem',
-  borderRadius: '8px',
-  width: '400px',
-  maxWidth: '100%',
-  color: 'Black',
-  width: '512px',
-  height: '560px',*/
   padding: '32px',
   gap: '32px',
   borderRadius: '16px',
