@@ -6,6 +6,7 @@ import Modal from './components/Modal';
 import { useUsers } from './queries/useUsers';
 import { styled } from '../stitches.config';
 import PlusImg from './assets/plus.svg';
+import { User } from './types/user';
 
 const queryClient = new QueryClient();
 
@@ -53,14 +54,19 @@ const HeaderRow = styled('div', {
   justifyContent: 'space-between'
 })
 
+interface CurrentUser {
+  user: User,
+  id: number
+}
+
 const App = () => {
   const { users, addUser, deleteUser, updateUser, responseSuccess } = useUsers();
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<any|null>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser|null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const handleAddUser = (user:any) => {
+  const handleAddUser = (user:User) => {
     addUser.mutate(user);
     setIsAddModalOpen(false);
   };
@@ -69,22 +75,21 @@ const App = () => {
     setIsAddModalOpen(true);
   };
 
-  const handleDeleteUser = (index:any) => {
-    deleteUser.mutate(index);
+  const handleDeleteUser = (id:number) => {
+    deleteUser.mutate(id);
   };
 
-  const handleEditUser = (user:any, index:any) => {
-    setCurrentUser({ ...user, index });
+  const handleEditUser = (user:User, id:number) => {
+    setCurrentUser({ user, id });
     setIsEditModalOpen(true);
   };
 
-  const handleUpdateUser = (user:any) => {
+  const handleUpdateUser = (user:User) => {
     if(!currentUser) return;
-    updateUser.mutate({ ...user, index: currentUser.index });
+    updateUser.mutate({ id: currentUser.id, user: user });
     setIsEditModalOpen(false);
     setCurrentUser(null);
   };
-
   const showToast = (message: string) => {
     setToastMessage(message);
     setTimeout(() => {
@@ -111,9 +116,11 @@ const App = () => {
         <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
           <UserForm formTitle="Add User" actionLabel='Add' onSubmit={handleAddUser} onCancel={() => setIsAddModalOpen(false)}/>
         </Modal>
+        {currentUser &&
         <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-          <UserForm formTitle="Edit User" actionLabel='Save' onSubmit={handleUpdateUser} onCancel={() => setIsEditModalOpen(false)} defaultValues={currentUser} />
+          <UserForm formTitle="Edit User" actionLabel='Save' onSubmit={handleUpdateUser} onCancel={() => setIsEditModalOpen(false)} defaultValues={currentUser.user} />
         </Modal>
+        }
       </div>
     </QueryClientProvider>
   );

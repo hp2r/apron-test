@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { User } from '../types/user';
 
 type UpdateUser = {
-  index: number;
-  updatedUser: any;
+  id: number;
+  user: User;
 };
 
 type ResponseType = {
@@ -26,7 +27,7 @@ export const useUsers = () => {
   const [responseSuccess, setResponseSuccess] = useState<ResponseType>(defaultResponse);
 
   const addUser = useMutation(
-    async (newUser) => {
+    async (newUser: User) => {
       setResponseSuccess(defaultResponse);
       const response = await fetch('http://localhost:5000/api/users', {
         method: 'POST',
@@ -49,9 +50,9 @@ export const useUsers = () => {
   );
 
   const deleteUser = useMutation(
-    async (index) => {
+    async (id:number) => {
       setResponseSuccess(defaultResponse);
-      const response = await fetch(`http://localhost:5000/api/users/${index}`, {
+      const response = await fetch(`http://localhost:5000/api/users/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -68,14 +69,14 @@ export const useUsers = () => {
   );
 
   const updateUser = useMutation(
-    async ({ index, ...updatedUser }:UpdateUser) => {
+    async (updatedUser: UpdateUser ) => {
       setResponseSuccess(defaultResponse);
-      const response = await fetch(`http://localhost:5000/api/users/${index}`, {
+      const response = await fetch(`http://localhost:5000/api/users/${updatedUser.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser),
+        body: JSON.stringify({ ...updatedUser.user }),
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');

@@ -1,16 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '../../stitches.config';
 import Modal from './Modal';
-import { AgGridReact } from 'ag-grid-react';
-import {
-  ColDef,
-  ColGroupDef,
-} from "@ag-grid-community/core";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import Table from './Table';
-import { set } from 'react-hook-form';
 import DeleteImg from '../assets/delete.svg';
+import { TableDataProps, User } from '../types/user';
 
 
 const Button = styled('button', {
@@ -80,42 +75,39 @@ const IconButton = styled('button', {
 });
 
 interface UserListProps {
-  users: any[];
-  onDelete: (index: number) => void;
-  onEdit: (user: any, index: number) => void;
+  users: TableDataProps[];
+  onDelete: (id: number) => void;
+  onEdit: (user: User, id: number) => void;
 }
-
-
 
 const UserList = ({ users, onDelete, onEdit }: UserListProps) => {
 
   const [modalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedUserIndex, setSelectedUserIndex] = useState<any>(null);
-  const [tableData, setTableData] = useState<any[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<number|null>(null);
+  const [tableData, setTableData] = useState<TableDataProps[]>([]);
 
-  //const gridRef = useRef<AgGridReact<ICar>>(null);
 
-  const deleteUserModal = (index: number) => {
+  const deleteUserModal = (id: number) => {
     setIsModalOpen(true);
-    setSelectedUserIndex(index);
+    setSelectedUserId(id);
   };
 
   const onDeleteUser = () => {
-    onDelete(selectedUserIndex);
+    onDelete(selectedUserId!);
     setIsModalOpen(false);
-    setSelectedUserIndex(null);
+    setSelectedUserId(null);
   };
 
   useEffect(() => {
     if(users) {
-      const tempTableData = users.map((user, index) => {
+      const tempTableData = users.map((user, id) => {
         return {
           gender: user.gender,
           firstname: user.firstname,
           lastname: user.lastname,
           age: user.age,
-          editButton: <Button data-testid={`edit-btn-${index}`} onClick={() => onEdit(user, index)}><span>Edit</span></Button>,
-          deleteButton: <IconButton data-testid={`delete-btn-${index}`}  onClick={() => deleteUserModal(index)}><Icon src={DeleteImg} alt="Delete User" /></IconButton>,
+          editButton: <Button data-testid={`edit-btn-${id}`} onClick={() => onEdit(user, id)}><span>Edit</span></Button>,
+          deleteButton: <IconButton data-testid={`delete-btn-${id}`}  onClick={() => deleteUserModal(id)}><Icon src={DeleteImg} alt="Delete User" /></IconButton>,
         }
       })
       setTableData(tempTableData);

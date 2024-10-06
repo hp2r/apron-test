@@ -30,30 +30,30 @@ app.post('/api/users', (req, res) => {
   res.status(201).json(newUser);
 });
 
-app.patch('/api/users/:index', (req, res) => {
+app.patch('/api/users/:id', (req, res) => {
   const users = readUsers();
-  const index = parseInt(req.params.index, 10);
+  const id = parseInt(req.params.id, 10);
 
-  if (isNaN(index) || index < 0 || index >= users.length) {
-    return res.status(400).json({ error: 'Invalid user index' });
+  if (isNaN(id) || id < 0 || id >= users.length) {
+    return res.status(400).json({ error: 'Invalid user id' });
   }
 
   if (!req.body || typeof req.body !== 'object' || Object.keys(req.body).length === 0) {
     return res.status(400).json({ error: 'Missing or invalid user data' });
   }
 
-  const updatedUser = { ...users[index], ...req.body };
-  users[index] = updatedUser;
+  const updatedUser = { ...users[id], ...req.body };
+  users[id] = updatedUser;
 
   writeUsers(users);
   res.json(updatedUser);
 });
 
-app.delete('/api/users/:index', (req, res) => {
+app.delete('/api/users/:id', (req, res) => {
   const users = readUsers();
-  const index = parseInt(req.params.index, 10);
-  if (index >= 0 && index < users.length) {
-    const deletedUser = users.splice(index, 1);
+  const id = parseInt(req.params.id, 10);
+  if (id >= 0 && id < users.length) {
+    const deletedUser = users.splice(id, 1);
     writeUsers(users);
     res.json(deletedUser);
   } else {
