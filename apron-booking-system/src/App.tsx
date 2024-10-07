@@ -27,11 +27,12 @@ const Button = styled('button', {
   justifyContent: 'center',
   float: 'right',
   margin: '3em 0 2em 0',
+  color: 'white',
   [`& ${Icon}`]: {
     cursor: 'pointer',
   },
   [`&:span`]: {
-    marginRight: 'auto'
+    marginRight: 'auto',
   }
 });
 
