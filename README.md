@@ -2,6 +2,8 @@
 
 ## Installation
 
+Ensure you have node 20+ installed!
+
 ### Frontend
 
 cd ./apron-booking-system
